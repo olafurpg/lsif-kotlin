@@ -2,6 +2,7 @@ package com.sourcegraph.lsif_kotlin
 
 import com.sourcegraph.lsif_java.SemanticdbPrinters
 import com.sourcegraph.lsif_java.commands.CommentSyntax
+import com.sourcegraph.scip_java.ScipJava
 import com.sourcegraph.semanticdb_javac.Semanticdb.TextDocument
 import com.sourcegraph.semanticdb_javac.Semanticdb.TextDocuments
 import java.nio.charset.StandardCharsets
@@ -15,6 +16,9 @@ fun main(args: Array<String>) {
     val sourceroot = Path(System.getProperty("sourceroot"))
     val targetroot = Path(System.getProperty("targetroot"))
 
+
+    ScipJava.main(arrayOf("index-semanticdb", "--cwd", sourceroot.toString(), "--output", targetroot.resolve("index.scip").toString(), targetroot.toString()))
+    ScipJava.main(arrayOf("snapshot", "--cwd", sourceroot.toString(), "--output", snapshotDir.toString(), targetroot.toString()))
     val sourceDirs = args.slice(1 until args.size).map(::Path).map(Path::getParent)
 
     sourceDirs.forEach { dir ->
